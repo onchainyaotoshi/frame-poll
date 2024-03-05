@@ -1,0 +1,24 @@
+{
+  "name": "frame-poll",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "dotenv -e .env -- frog dev",
+    "serve": "tsx src/index.tsx",
+    "install-db": "dotenv -e .env -- node ./scripts/install-db.js",
+    "install-db:live": "node ./scripts/install-db.js"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1",
+    "frog": "latest",
+    "hono": "^4",
+    "knex": "^3.1.0",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.3.0",
+    "tsx": "^3.12.2"
+  }
+}
