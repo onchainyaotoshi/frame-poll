@@ -12,6 +12,7 @@ const createUsersTable = async () => {
     await db.schema.createTable('users', (table) => {
       table.increments('user_id').primary();
       table.bigInteger('fid').notNullable().unique();
+      table.timestamp('created_at', { useTz: true }).notNullable();
     });
     console.log('Table users created');
   } else {
@@ -19,90 +20,53 @@ const createUsersTable = async () => {
   }
 };
 
-const createSessionsTable = async () => {
-  const exists = await db.schema.hasTable('sessions');
+const createPollsTable = async () => {
+  const exists = await db.schema.hasTable('polls');
   if (!exists) {
-    await db.schema.createTable('sessions', (table) => {
-      table.increments('session_id').primary();
-      table.bigInteger('fid').notNullable();
-      table.timestamp('start_time', { useTz: true }).notNullable();
-      table.timestamp('end_time', { useTz: true });
-      table.enu('status', ['active', 'completed', 'abandoned']).notNullable();
-      table.varchar('initial_state', 59).notNullable();
-      table.varchar('current_state', 59).notNullable();
-      table.foreign('fid').references('users.fid');
+    await db.schema.createTable('polls', (table) => {
+      table.increments('poll_id').primary();
+      table.bigInteger('fid').notNullable().references('fid').inTable('users'); // Reference 'fid' instead of 'user_id'
+      table.string('title', 255).notNullable();
+      table.timestamp('created_at', { useTz: true }).notNullable();
     });
-    console.log('Table sessions created');
+    console.log('Table polls created');
   } else {
-    console.log('Table sessions already exists');
+    console.log('Table polls already exists');
   }
 };
 
-const createMovesTable = async () => {
-  const exists = await db.schema.hasTable('moves');
+const createPollOptionsTable = async () => {
+  const exists = await db.schema.hasTable('poll_options');
   if (!exists) {
-    await db.schema.createTable('moves', (table) => {
-      table.increments('move_id').primary();
-      table.integer('session_id').notNullable();
-      table.integer('move_sequence').notNullable();
-      table.string('move_notation', 10).notNullable();
-      table.varchar('from_state', 59).notNullable();
-      table.varchar('to_state', 59).notNullable();
-      table.timestamp('move_timestamp', { useTz: true }).defaultTo(db.fn.now());
-
-      // Add onDelete('CASCADE') to automatically delete moves when the associated session is deleted
-      table.foreign('session_id').references('sessions.session_id').onDelete('CASCADE');
+    await db.schema.createTable('poll_options', (table) => {
+      table.increments('option_id').primary();
+      table.integer('poll_id').notNullable().references('poll_id').inTable('polls');
+      table.string('option_text', 255).notNullable();
+      table.timestamp('created_at', { useTz: true }).notNullable();
     });
-    console.log('Table moves created');
-  } else {
-    console.log('Table moves already exists');
+    console.log('Table poll_options created');
   }
 };
 
-const createWelcomeAirdropsTable = async () => {
-  const exists = await db.schema.hasTable('welcome_airdrops');
+const createPollResponsesTable = async () => {
+  const exists = await db.schema.hasTable('poll_responses');
   if (!exists) {
-    await db.schema.createTable('welcome_airdrops', (table) => {
-      table.increments('id').primary(); // Primary key
-      table.bigInteger('fid').notNullable(); // User foreign ID
-      table.string('token', 255).notNullable(); // Token name or symbol
-      table.integer('amount').notNullable(); // Token amount as an integer
-      table.string('address', 42).nullable(); // Blockchain address, now nullable
-      table.integer('session_id').unsigned().nullable(); // New column for session_id as an unsigned integer
-
-      table.foreign('fid').references('users.fid'); // Foreign key relationship to the 'users' table
-      table.foreign('session_id').references('sessions.session_id').onDelete('SET NULL');; // Foreign key relationship to the 'sessions' table
+    await db.schema.createTable('poll_responses', (table) => {
+      table.increments('response_id').primary();
+      table.integer('poll_id').notNullable().references('poll_id').inTable('polls');
+      table.integer('option_id').notNullable().references('option_id').inTable('poll_options');
+      table.bigInteger('fid').notNullable().references('fid').inTable('users'); // Reference 'fid' instead of 'user_id'
+      table.timestamp('created_at', { useTz: true }).notNullable();
     });
-    console.log('Table welcome_airdrops created');
-  } else {
-    console.log('Table welcome_airdrops already exists');
+    console.log('Table poll_responses created');
   }
 };
-
-const createSmartContractsTable = async () => {
-  const exists = await db.schema.hasTable('smart_contracts');
-  if (!exists) {
-    await db.schema.createTable('smart_contracts', (table) => {
-      table.increments('id').primary();
-      table.string('ticker').notNullable();
-      table.json('abi').notNullable();
-      table.string('address', 42).notNullable(); // Assuming Ethereum addresses which are 42 characters long including the '0x'
-      table.integer('amount').notNullable();
-      table.enu('status', ['active', 'inactive']).defaultTo('active').notNullable();
-    });
-    console.log('Table smart_contracts created');
-  } else {
-    console.log('Table smart_contracts already exists');
-  }
-};
-
 
 export const initialize = async()=>{
   await createUsersTable();
-  await createSessionsTable();
-  await createMovesTable();
-  await createWelcomeAirdropsTable();
-  await createSmartContractsTable();
+  await createPollsTable();
+  await createPollOptionsTable();
+  await createPollResponsesTable();
 }
 
 await initialize();
