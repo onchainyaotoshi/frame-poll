@@ -1,9 +1,9 @@
 import { FrameContext } from "frog";
 
-export default (c: FrameContext, content: string): JSX.Element => (<div
+export default (c: FrameContext, content:string): JSX.Element => (<div
   style={{
     alignItems: 'center',
-    background: 'linear-gradient(to right, #6a11cb, #2575fc)',
+    background: 'linear-gradient(to right, #ffcccc, #ff9999)',
     backgroundSize: '100% 100%',
     display: 'flex',
     flexDirection: 'column',

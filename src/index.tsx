@@ -1,32 +1,35 @@
 import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
-import { Button, Frog, TextInput } from 'frog'
-import Style1 from './components/style-1'
-import {app as Poll} from './routes/poll'
+import {app as PollHandler} from './routes/poll'
+import HomeController from './controllers/atomic/home'
+import IndexController from './controllers/index-controller'
+import { getFrogApp } from './utils/app'
+import ngrok from '@ngrok/ngrok';
+import {isLive} from './utils/dev-tools'
 
-export const app = new Frog({
-  // Supply a Hub API URL to enable frame verification.
-  // hubApiUrl: 'https://api.hub.wevm.dev',
-})
+const app = getFrogApp();
 
 app.use('/*', serveStatic({ root: './public' }))
+// (c)=>HomeController(c,'/poll/0')
+app.frame('/', IndexController);
 
-app.frame('/', (c) => {
-  return c.res({
-    action: '/poll',
-    image: Style1(`Create Your Own Poll`,c),
-    intents: [
-      <Button value="login">Let's go</Button>,
-    ],
-  })
-})
+app.route("/poll", PollHandler);
 
-app.route("/poll", Poll);
-
-const port = 3000
+const port: number | undefined = process.env.PORT ? +process.env.PORT : undefined;
 console.log(`Server is running on port ${port}`)
 
 serve({
   fetch: app.fetch,
   port,
 })
+
+// if(!isLive()){
+//   const listener = await ngrok.connect({
+//     proto: 'http',
+//     addr: port,
+//     authtoken_from_env: true,
+//     domain: process.env.FC_DOMAIN ? process.env.FC_DOMAIN.replace("https://", "") : ''
+//   });
+  
+//   console.log(`${listener.url()}`);
+// }

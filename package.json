@@ -2,23 +2,30 @@
   "name": "frame-poll",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "dotenv -e .env -- frog dev",
-    "serve": "tsx src/index.tsx",
-    "install-db": "dotenv -e .env -- node ./scripts/install-db.js",
-    "install-db:live": "node ./scripts/install-db.js"
+    "start": "dotenv -e .env -- nodemon -e ts,tsx --exec tsx src/index.tsx",
+    "install-db": "dotenv -e .env -- tsx ./scripts/install-db.ts",
+    "install-db:live": "tsx ./scripts/install-db.ts"
   },
   "dependencies": {
     "@hono/node-server": "^1",
     "frog": "latest",
     "hono": "^4",
     "knex": "^3.1.0",
+    "lodash": "^4.17.21",
     "pg": "^8.11.3"
   },
   "devDependencies": {
+    "@ngrok/ngrok": "^1.1.1",
+    "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.17",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.3.0",
+    "nodemon": "^3.1.0",
     "tsx": "^3.12.2"
   }
 }
