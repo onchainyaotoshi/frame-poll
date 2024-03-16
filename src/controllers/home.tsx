@@ -1,7 +1,8 @@
 import { Button, FrameContext, FrameResponse, TextInput } from "frog"
-import Style1 from '../../components/style-1'
+import Style1 from '../components/style-1'
+import { type TypedResponse } from "../../node_modules/frog/types/response";
 
-export default (c: FrameContext, a?: string): FrameResponse => c.res({
+export default (c: FrameContext, a?: string): TypedResponse<FrameResponse> => c.res({
     action: a ? a : undefined,
     image: Style1(c, "Poll Menu"),
     intents: [

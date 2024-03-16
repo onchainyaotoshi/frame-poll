@@ -1,13 +1,15 @@
 import { FrameContext, FrameResponse } from "frog"
-import QuestionController from './atomic/question'
-import ErrorController from './atomic/error'
-import BackHomeController from './atomic/back-home'
+import QuestionController from './question'
+import ErrorController from './error'
+import BackHomeController from './back-home'
 
-import PollModel from '../models/poll';
+import PollModel, { IPollModel } from '../models/poll';
 import PollOptionModel from '../models/poll_option';
 
-export default async (c: FrameContext): Promise<FrameResponse> =>{
-    const {cycle, frameData, verified, inputText, deriveState} = c;
+import { type TypedResponse } from "../../node_modules/frog/types/response";
+
+export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>{
+    const {frameData, verified, inputText, deriveState} = c;
     const { fid } = frameData ?? {};
     
     const state:any = await deriveState((async previousState=>{
@@ -16,14 +18,18 @@ export default async (c: FrameContext): Promise<FrameResponse> =>{
         const poll = await PollModel.create({
             fid: state.fid!,
             question: state.question!,
-            options:  state.options!.trim()
+            options:  state.options!.trim(),
+            durationInHours: state.duration!
         });
 
-        await PollOptionModel.createBatch(poll.poll_id!,state.validatedOptions!.data!);        
+        await PollOptionModel.createBatch(poll.poll_id!,state.validatedOptions!.data!);
+        
+        state._id = poll.poll_id!
     }));
     
     return BackHomeController(c, {
-        content: `You can post this link\n${process.env.FC_DOMAIN}${state.poll_id!}`
+        state:state,
+        content: `You can post this link\n${process.env.FC_DOMAIN}/vote/${state._id!}`
     });
 }
 

@@ -1,8 +1,10 @@
 import { FrameContext, FrameResponse } from "frog"
-import QuestionController from './atomic/question'
-import ErrorController from './atomic/error'
+import QuestionController from './question'
+import ErrorController from './error'
 
-export default async (c: FrameContext): Promise<FrameResponse> =>{
+import { type TypedResponse } from "../../node_modules/frog/types/response";
+
+export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>{
     const {cycle, frameData, verified, inputText, deriveState} = c;
     const { fid } = frameData ?? {};
     const {id} = c.req.param() as { id: string };
@@ -15,7 +17,7 @@ export default async (c: FrameContext): Promise<FrameResponse> =>{
         });
     }
 
-    const state:any = deriveState((previousState) => {
+    const state:any = await deriveState((previousState) => {
         if(id == '0'){
             const state = previousState as Poll;
             state.question = inputText?.trim();

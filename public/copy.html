@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copy to Clipboard</title>
+<style>
+  body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .text-to-copy {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="textToCopy" class="text-to-copy">{{data}}</div>
+  <button onclick="copyText()">Copy Text</button>
+</div>
+
+<script>
+function copyText() {
+  const textToCopy = document.getElementById('textToCopy').innerText;
+  
+  // Use the Clipboard API
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    // Success feedback
+    alert('Text copied to clipboard');
+  }).catch(err => {
+    // Error handling
+    console.error('Failed to copy text:', err);
+    // Fallback for older browsers or in case of an error
+    fallbackCopyTextToClipboard(textToCopy);
+  });
+}
+
+function fallbackCopyTextToClipboard(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    alert('Text copied to clipboard');
+  } catch (err) {
+    console.error('Fallback: Oops, unable to copy', err);
+  }
+  document.body.removeChild(textarea);
+}
+</script>
+
+</body>
+</html>

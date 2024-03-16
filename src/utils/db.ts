@@ -12,7 +12,7 @@ const createUsersTable = async () => {
     await db.schema.createTable('users', (table) => {
       table.increments('user_id').primary();
       table.bigInteger('fid').notNullable().unique();
-      table.timestamp('created_at').defaultTo(db.fn.now());
+      table.timestamp('created_at', { useTz: true }).defaultTo(db.fn.now());
     });
     console.log('Table users created');
   } else {
@@ -28,7 +28,8 @@ const createPollsTable = async () => {
       table.bigInteger('fid').notNullable().references('fid').inTable('users'); // Reference 'fid' instead of 'user_id'
       table.string('question').notNullable();
       table.string('options').notNullable();
-      table.timestamp('created_at').defaultTo(db.fn.now());
+      table.timestamp('deadline', { useTz: true }).notNullable();
+      table.timestamp('created_at', { useTz: true }).defaultTo(db.fn.now());
     });
     console.log('Table polls created');
   } else {
@@ -43,7 +44,7 @@ const createPollOptionsTable = async () => {
       table.increments('option_id').primary();
       table.integer('poll_id').notNullable().references('poll_id').inTable('polls');
       table.string('option_text', 255).notNullable();
-      table.timestamp('created_at').defaultTo(db.fn.now());
+      table.timestamp('created_at', { useTz: true }).defaultTo(db.fn.now());
     });
     console.log('Table poll_options created');
   }
@@ -57,7 +58,7 @@ const createPollVotesTable = async () => {
       table.integer('poll_id').notNullable().references('poll_id').inTable('polls');
       table.integer('option_id').notNullable().references('option_id').inTable('poll_options');
       table.bigInteger('fid').notNullable().references('fid').inTable('users'); // Reference 'fid' instead of 'user_id'
-      table.timestamp('created_at').defaultTo(db.fn.now());
+      table.timestamp('created_at', { useTz: true }).defaultTo(db.fn.now());
     });
     console.log('Table poll_votes created');
   }

@@ -1,7 +1,9 @@
 import { Button, FrameContext, FrameResponse, TextInput } from "frog"
-import PollPreview from '../../components/poll-preview'
+import PollPreview from '../components/poll-preview'
 
-export default (c: FrameContext, opts:Record<string,any>): FrameResponse => c.res({
+import { type TypedResponse } from "../../node_modules/frog/types/response";
+
+export default (c: FrameContext, opts:Record<string,any>): TypedResponse<FrameResponse> => c.res({
     action: opts.action ? opts.action : undefined,
     image: PollPreview(c,opts.state),
     intents: [

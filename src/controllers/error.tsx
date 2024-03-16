@@ -1,7 +1,8 @@
 import { Button, FrameContext, FrameResponse, TextInput } from "frog"
-import StyleError from '../../components/style-error'
+import StyleError from '../components/style-error'
+import { type TypedResponse } from "../../node_modules/frog/types/response";
 
-export default (c: FrameContext, opts:Record<string,any>): FrameResponse => c.res({
+export default (c: FrameContext, opts:Record<string,any>): TypedResponse<FrameResponse> => c.res({
     action: opts.action ? opts.action : undefined,
     image: StyleError(c, opts.content),
     intents: [

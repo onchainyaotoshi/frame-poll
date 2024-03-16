@@ -5,7 +5,8 @@ import _ from 'lodash';
 
 const frogAppArgs: FrogConstructorParameters = {
     dev:{
-        appFid: 282770
+        appFid: 282770,
+        enabled: process.env.FC_DEV_NGROK == '0'
     }
 }
 
@@ -14,4 +15,4 @@ if(isLive()){
     frogAppArgs.verify = 'silent';
 }
 
-export const getFrogApp = (opts: FrogConstructorParameters<Poll> = {}) => new Frog<{ State: Poll }>(_.merge(frogAppArgs,opts));
+export const getFrogApp = (opts: FrogConstructorParameters<{State:Poll}> = {}) => new Frog(_.merge(frogAppArgs,opts));

@@ -41,7 +41,15 @@ export default (c: FrameContext, state: any): JSX.Element => (<div
     fontSize: 36,
     position: 'absolute',
     bottom: 16, left: 16
-  }}>Finished? Click 'Submit' to proceed.</div>
+  }}>{`Finished? Click 'Submit' to proceed.`}</div>
+
+  
+<div style={{
+    color: 'white',
+    fontSize: 36,
+    position: 'absolute',
+    top: 16, right: 16
+  }}>{`Vote within ${state.duration}hrs before poll closes.`}</div>
 
 {/* content */}
   {state.validatedOptions.data.map((val:string, index:number) => <div
@@ -66,7 +74,7 @@ export default (c: FrameContext, state: any): JSX.Element => (<div
     justifyContent: 'center', // Center content horizontally in the flex container
     alignItems: 'center', // Center content vertically in the flex container
   }}>
-    Input Text
+    {`Input Text`}
   </div>
 
   <div style={{
@@ -80,7 +88,7 @@ export default (c: FrameContext, state: any): JSX.Element => (<div
     justifyContent: 'center', // Center content horizontally in the flex container
     alignItems: 'center', // Center content vertically in the flex container
   }}>
-    Submit
+    {`Submit`}
   </div>
   </>)
  : (

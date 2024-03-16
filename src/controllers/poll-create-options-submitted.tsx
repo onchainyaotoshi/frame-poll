@@ -1,9 +1,11 @@
 import { FrameContext, FrameResponse } from "frog"
-import PoolPreviewController from './atomic/poll-preview'
-import ErrorController from './atomic/error'
+import QuestionController from './question'
+import ErrorController from './error'
 import {validateOptions} from '../utils/poll'
 
-export default async (c: FrameContext): Promise<FrameResponse> =>{
+import { type TypedResponse } from "../../node_modules/frog/types/response";
+
+export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>{
     const {cycle, frameData, verified, inputText, deriveState} = c;
     const { fid } = frameData ?? {};
     const {id} = c.req.param() as { id: string };
@@ -17,7 +19,7 @@ export default async (c: FrameContext): Promise<FrameResponse> =>{
     }
 
     if(inputText && id == '0'){
-        const validatedOptions: ValidationResult<string[]> = validateOptions(inputText);
+        const validatedOptions: ValidationResult<string[]> = validateOptions(inputText) as ValidationResult<string[]>;
         if(!validatedOptions.pass){
             return ErrorController(c, {
                 content: validatedOptions.message,
@@ -27,18 +29,21 @@ export default async (c: FrameContext): Promise<FrameResponse> =>{
         }
     }
 
-    const state= deriveState((previousState) => {
-        const state = previousState as Poll;
-        state.options = inputText?.trim();
-
-        if(state.options != undefined){
-            state.validatedOptions = validateOptions(state.options as string);
+    const state= await deriveState((previousState) => {
+        if(id == '0'){
+            const state = previousState as Poll;
+            state.options = inputText?.trim();
+    
+            if(state.options != undefined){
+                state.validatedOptions = (validateOptions(state.options as string)) as ValidationResult<string[]>;
+            }
         }
     }) as Poll;
 
-    return PoolPreviewController(c, {
-        state: state,
-        btnSubmitValue: 'poll-create-save',
+    return QuestionController(c, {
+        content: `${state.question}\n${state.options}`,
+        placeholder: `Poll expiry in hours (e.g., 24)`,
+        btnSubmitValue: 'poll-create-deadline-submitted',
         btnSubmitAction: '/0',
         btnBackValue: 'poll-create-options-back',
         btnBackAction: '/1'
