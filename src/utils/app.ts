@@ -15,4 +15,4 @@ if(isLive()){
     frogAppArgs.verify = 'silent';
 }
 
-export const getFrogApp = (opts: FrogConstructorParameters<{State:Poll}> = {}) => new Frog(_.merge(frogAppArgs,opts));
+export const getFrogApp = (opts: FrogConstructorParameters<{State:PollType}> = {}) => new Frog(_.merge(frogAppArgs,opts));

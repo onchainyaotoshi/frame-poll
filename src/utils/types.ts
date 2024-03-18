@@ -1,14 +1,14 @@
-type ValidationResult<T> = {
+type ValidationResultType<T> = {
     pass:boolean,
     message?:string,
     data?:T
 }
 
-type Poll = {
+type PollType = {
     fid:number  | undefined,
     question:string  | undefined,
     options:string  | undefined,
     duration: number | undefined,
-    validatedOptions:ValidationResult<string[]> | undefined
+    validatedOptions:ValidationResultType<string[]> | undefined
     _id:number | undefined
 }

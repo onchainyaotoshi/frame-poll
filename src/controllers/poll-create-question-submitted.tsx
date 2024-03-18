@@ -5,7 +5,7 @@ import ErrorController from './error'
 import { type TypedResponse } from "../../node_modules/frog/types/response";
 
 export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>{
-    const {cycle, frameData, verified, inputText, deriveState} = c;
+    const {frameData, verified, inputText, deriveState} = c;
     const { fid } = frameData ?? {};
     const {id} = c.req.param() as { id: string };
 
@@ -19,10 +19,10 @@ export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>
 
     const state:any = await deriveState((previousState) => {
         if(id == '0'){
-            const state = previousState as Poll;
+            const state = previousState as PollType;
             state.question = inputText?.trim();
         }
-    }) as Poll;
+    }) as PollType;
     
     return QuestionController(c, {
         content: `${state.question}`,

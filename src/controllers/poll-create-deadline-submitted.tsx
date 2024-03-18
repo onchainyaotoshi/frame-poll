@@ -30,10 +30,10 @@ export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>
     const state= await deriveState((previousState) => {
         console.log(id, previousState);
         if(id == '0'){
-            const state = previousState as Poll;
+            const state = previousState as PollType;
             state.duration = Number(inputText?.trim())
         }
-    }) as Poll;
+    }) as PollType;
 
     return PoolPreviewController(c, {
         state: state,

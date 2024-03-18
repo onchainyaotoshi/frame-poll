@@ -6,6 +6,10 @@ export default (c: FrameContext, opts:Record<string,any>): TypedResponse<FrameRe
     action: opts.action ? opts.action : undefined,
     image: StyleError(c, opts.content),
     intents: [
+      opts.hideBack ? null : 
+
+      opts.isReset ? <Button.Reset>Back</Button.Reset>
+      :
       opts.btnBackAction ? <Button value={opts.btnBackValue ? opts.btnBackValue : 'back'} action={opts.btnBackAction}>Back</Button> : <Button value={opts.btnBackValue ? opts.btnBackValue : 'back'}>Back</Button>,
     ]
   });

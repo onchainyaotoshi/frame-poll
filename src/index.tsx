@@ -5,6 +5,7 @@ import ngrok from '@ngrok/ngrok';
 import {isLive} from './utils/dev-tools'
 
 import {app as AdminRoute} from './routes/admin';
+import {app as VoteRoute} from './routes/vote';
 import IndexController from './controllers/index';
 import { Context } from 'hono';
 
@@ -18,9 +19,10 @@ const app = getFrogApp();
 
 app.use('/*', serveStatic({ root: './public' }))
 
-app.frame("/", (c)=>IndexController(c,"/admin/0"))
+app.frame("/", (c)=>IndexController(c,"/vote/17"))
 
 app.route("/admin", AdminRoute);
+app.route("/vote", VoteRoute);
 
 app.hono.get('/tool/:id',async (c: Context)=>{
     const filePath = path.join(__dirname,"..", 'public', 'copy.html');

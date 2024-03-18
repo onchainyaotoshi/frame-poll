@@ -13,7 +13,7 @@ export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>
     const { fid } = frameData ?? {};
     
     const state:any = await deriveState((async previousState=>{
-        const state = previousState as Poll;
+        const state = previousState as PollType;
         
         const poll = await PollModel.create({
             fid: state.fid!,
@@ -29,7 +29,7 @@ export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>
     
     return BackHomeController(c, {
         state:state,
-        content: `You can post this link\n${process.env.FC_DOMAIN}/vote/${state._id!}`
+        content: `Copy and paste the link below so users can vote on the poll you created.\n${process.env.FC_DOMAIN}/vote/${state._id!}`
     });
 }
 

@@ -19,7 +19,7 @@ export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>
     }
 
     if(inputText && id == '0'){
-        const validatedOptions: ValidationResult<string[]> = validateOptions(inputText) as ValidationResult<string[]>;
+        const validatedOptions: ValidationResultType<string[]> = validateOptions(inputText) as ValidationResultType<string[]>;
         if(!validatedOptions.pass){
             return ErrorController(c, {
                 content: validatedOptions.message,
@@ -31,14 +31,14 @@ export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>
 
     const state= await deriveState((previousState) => {
         if(id == '0'){
-            const state = previousState as Poll;
+            const state = previousState as PollType;
             state.options = inputText?.trim();
     
             if(state.options != undefined){
-                state.validatedOptions = (validateOptions(state.options as string)) as ValidationResult<string[]>;
+                state.validatedOptions = (validateOptions(state.options as string)) as ValidationResultType<string[]>;
             }
         }
-    }) as Poll;
+    }) as PollType;
 
     return QuestionController(c, {
         content: `${state.question}\n${state.options}`,

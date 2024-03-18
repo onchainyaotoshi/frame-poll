@@ -17,6 +17,7 @@ import PollCreateSaveSubmittedController from '../controllers/poll-create-save-s
 import PollCreateDeadlineSubmittedController  from '../controllers/poll-create-deadline-submitted';
 
 import UserModel from '../models/user';
+import PollModel from '../models/poll'
 
 export const app = getFrogApp({
   initialState:{
@@ -24,7 +25,8 @@ export const app = getFrogApp({
     question:undefined,
     options:undefined,
     duration:undefined,
-    validatedOptions:undefined
+    validatedOptions:undefined,
+    _id:undefined
   }
 });
 
@@ -67,6 +69,9 @@ app.frame('/:id?', async (c) => {
       await UserModel.createIfNotExists(fid!);
     }
     
-    return PollController(c);
+    const polls = await PollModel.listNewToOld(7);
+    return PollController(c, {
+      data: polls
+    });
   }
 })

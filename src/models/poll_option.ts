@@ -1,6 +1,6 @@
 import db from '../utils/db.js';
 
-interface IPollOptionModel {
+export interface IPollOptionModel {
   option_id?: number; // Optional since it's auto-incremented by the database
   poll_id: number;
   option_text: string;
@@ -20,5 +20,13 @@ export default class PollOptionModel {
 
     await db.batchInsert(this.tableName, optionsToInsert, 30); // The '30' here is the batch size, adjust as needed
     // No need to handle the return value
+  }
+
+  static async getByPollId(poll_id: number): Promise<IPollOptionModel[]> {
+    const poll = await db(this.tableName)
+      .where({ poll_id })
+      .returning('*')
+
+    return poll;
   }
 }

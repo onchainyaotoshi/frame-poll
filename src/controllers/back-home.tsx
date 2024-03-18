@@ -7,7 +7,7 @@ export default (c: FrameContext, opts:Record<string,any>): TypedResponse<FrameRe
     action: opts.action ? opts.action : undefined,
     image: Style1(c, opts.content),
     intents: [
-        <Button.Reset>Home</Button.Reset>,
+        <Button>Main Menu</Button>,
         <Button.Link href={`/tool/${opts.state._id}`}>Copy</Button.Link>,
     ],
 });
