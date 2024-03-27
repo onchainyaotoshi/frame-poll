@@ -36,4 +36,51 @@ export default class VoteModel {
 
     return voteOption ? voteOption.option_text : null; // Returns the option text if found, null otherwise
   }
+
+  static async getVoteCountsByOptionInPercentage(poll_id: number): Promise<{ total_voters: number, vote_details: Array<{ option_text: string, vote_percentage: number }> }> {
+    // First, get the total number of votes for the poll
+    const totalVotesResult = await db(this.tableName)
+      .where({ poll_id })
+      .count('* as total_votes')
+      .first();
+  
+    // Handle the case where totalVotesResult might be undefined
+    const totalVotes: number = totalVotesResult ? parseInt(totalVotesResult.total_votes as string) : 0;
+  
+    if (totalVotes === 0) {
+      // Fetch all poll options with a vote_percentage of 0 if there are no votes yet
+      const options = await db('poll_options')
+        .where({ poll_id })
+        .select('option_text');
+  
+      const voteDetails = options.map(option => ({
+        option_text: option.option_text,
+        vote_percentage: 0 // Manually set vote_percentage to 0
+      }));
+  
+      return { total_voters: 0, vote_details: voteDetails };
+    }
+  
+    // Then, get the count of votes for each option and calculate the percentage for cases where totalVotes is not 0
+    const voteCounts = await db('poll_options')
+      .leftJoin(`${this.tableName}`, function() {
+        this.on('poll_votes.option_id', '=', 'poll_options.option_id')
+          .andOn('poll_votes.poll_id', '=', db.raw('?', [poll_id]))
+      })
+      .where('poll_options.poll_id', poll_id)
+      .groupBy('poll_options.option_text')
+      .select('poll_options.option_text')
+      .count('poll_votes.option_id as votes')
+      .select(db.raw('COALESCE(ROUND((COUNT(poll_votes.option_id)::decimal / ?) * 100, 2), 0) as vote_percentage', [totalVotes]));
+  
+    const voteDetails = voteCounts.map(vote => ({
+      option_text: String(vote.option_text), // Explicitly cast option_text to string
+      vote_percentage: Number(vote.vote_percentage) // Ensure vote_percentage is a number
+    }));
+  
+    return {
+      total_voters: totalVotes,
+      vote_details: voteDetails
+    };
+  }
 }

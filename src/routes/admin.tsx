@@ -1,12 +1,13 @@
 import { getFrogApp } from '../utils/app'
 
 import PollController from '../controllers/home'
-import PlaceholderController from '../controllers/placeholder'
+import PollResult from '../controllers/poll-result'
 import QuestionController from '../controllers/question'
 import IndexController from '../controllers/index'
 import ErrorController from '../controllers/error'
 
 
+import PollVoteModel from '../models/poll_vote';
 
 import { Button, FrameContext, FrameResponse, TextInput } from "frog"
 import Style1 from '../components/style-1.js'
@@ -54,12 +55,16 @@ app.frame('/:id?', async (c) => {
   }else if(buttonValue == 'poll-create-save'){
     return await PollCreateSaveSubmittedController(c);
   }else if(buttonValue == 'poll-view'){
-    return PlaceholderController(c, {
-      content: `View Page`
-    });
-  }else if(buttonValue == 'poll-delete'){
-    return PlaceholderController(c, {
-      content: `Delete Page`
+    const poll = await PollModel.getPollById(parseInt(inputText!));
+    if(poll){
+      const data = await PollVoteModel.getVoteCountsByOptionInPercentage(poll.poll_id!);
+      return PollResult(c, {
+        state: data
+      });
+    }
+
+    return ErrorController(c, {
+      content: `The poll (${inputText}) was not found`
     });
   }else if(buttonValue == 'poll-back'){
     return IndexController(c);
