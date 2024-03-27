@@ -4,10 +4,10 @@ import { isLive } from './dev-tools';
 import _ from 'lodash';
 
 const frogAppArgs: FrogConstructorParameters = {
-    dev:{
-        appFid: 282770,
-        enabled: process.env.FC_DEV_NGROK == '0'
-    }
+    // dev:{
+    //     appFid: 282770,
+    //     enabled: parseInt(process.env.FC_DEV_NGROK!) === 0
+    // }
 }
 
 if(isLive()){

@@ -1,5 +1,7 @@
 import { serve } from '@hono/node-server'
-import { serveStatic } from '@hono/node-server/serve-static'
+import { serveStatic } from 'frog/serve-static'
+ 
+import { devtools } from 'frog/dev'
 import { getFrogApp } from './utils/app'
 import ngrok from '@ngrok/ngrok';
 import {isLive} from './utils/dev-tools'
@@ -19,7 +21,8 @@ const app = getFrogApp();
 
 app.use('/*', serveStatic({ root: './public' }))
 
-app.frame("/", (c)=>IndexController(c,"/vote/17"))
+// app.frame("/", (c)=>IndexController(c,"/vote/19"))
+app.frame("/", (c)=>IndexController(c,"/admin"))
 
 app.route("/admin", AdminRoute);
 app.route("/vote", VoteRoute);
@@ -39,20 +42,25 @@ app.hono.get('/tool/:id',async (c: Context)=>{
 });
 
 const port: number | undefined = process.env.PORT ? +process.env.PORT : undefined;
-console.log(`Server is running on port ${port}`)
 
 serve({
   fetch: app.fetch,
   port,
 })
 
-if(!isLive() && process.env.FC_DEV_NGROK == '1'){
-  const listener = await ngrok.connect({
-    proto: 'http',
-    addr: port,
-    authtoken_from_env: true,
-    domain: process.env.FC_DOMAIN ? process.env.FC_DOMAIN.replace("https://", "") : ''
-  });
-  
-  console.log(`${listener.url()}`);
+console.log(`Server is running on port ${port}`)
+
+if(!isLive()){
+  if(parseInt(process.env.FC_DEV_NGROK!) === 1){
+    const listener = await ngrok.connect({
+      proto: 'http',
+      addr: port,
+      authtoken_from_env: true,
+      domain: process.env.FC_DOMAIN ? process.env.FC_DOMAIN.replace("https://", "") : ''
+    });
+    
+    console.log(`${listener.url()}`);
+  }else{
+    devtools(app, { serveStatic })
+  }
 }
