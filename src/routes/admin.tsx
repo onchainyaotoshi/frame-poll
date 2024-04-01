@@ -40,7 +40,6 @@ app.frame('/:id?', async (c) => {
     previousState.fid = fid;
   });
 
-  console.log('pool.tsx',id, status, buttonValue,state);
   if(buttonValue == 'poll-create-question-submitted'){
     return await PollCreateQuestionSubmittedController(c);
   }
@@ -55,12 +54,15 @@ app.frame('/:id?', async (c) => {
   }else if(buttonValue == 'poll-create-save'){
     return await PollCreateSaveSubmittedController(c);
   }else if(buttonValue == 'poll-view'){
-    const poll = await PollModel.getPollById(parseInt(inputText!));
-    if(poll){
-      const data = await PollVoteModel.getVoteCountsByOptionInPercentage(poll.poll_id!);
-      return PollResult(c, {
-        state: data
-      });
+    if(!isNaN(parseInt(inputText!))){
+      const poll = await PollModel.getPollById(parseInt(inputText!));
+      if(poll){
+        const data = await PollVoteModel.getVoteCountsByOptionInPercentage(poll.poll_id!);
+        return PollResult(c, {
+          state: data,
+          poll:poll
+        });
+      }
     }
 
     return ErrorController(c, {
@@ -74,7 +76,7 @@ app.frame('/:id?', async (c) => {
       await UserModel.createIfNotExists(fid!);
     }
     
-    const polls = await PollModel.listNewToOld(7);
+    const polls = await PollModel.listNewToOld();
     return PollController(c, {
       data: polls
     });

@@ -59,7 +59,11 @@ const createPollVotesTable = async () => {
       table.integer('option_id').notNullable().references('option_id').inTable('poll_options');
       table.bigInteger('fid').notNullable().references('fid').inTable('users'); // Reference 'fid' instead of 'user_id'
       table.timestamp('created_at', { useTz: true }).defaultTo(db.fn.now());
-    });
+    }).then(() => db.schema.alterTable('poll_votes', (table) => {
+      // Assuming 'poll_id' and 'fid' need to be unique together
+      table.unique(['poll_id', 'fid']);
+    }));
+    
     console.log('Table poll_votes created');
   }
 };

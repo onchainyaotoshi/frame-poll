@@ -1,11 +1,11 @@
 import { Button, FrameContext, FrameResponse, TextInput } from "frog"
-import Style1 from '../components/style-1.js'
+import Style from '../components/style-index'
 import { type TypedResponse } from "../../node_modules/frog/types/response.js";
 
 export default (c: FrameContext, a?: string): TypedResponse<FrameResponse> => c.res({
     action: a ? a : undefined,
-    image: Style1(c, `Create Your Own Poll`),
+    image: `${process.env.FC_DOMAIN}/images/main.png?ver=5`,
     intents: [
-        <Button value="login">{`Enter`}</Button>,
+        <Button value="login">{`Les Goh`}</Button>,
     ],
 });

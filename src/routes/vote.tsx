@@ -6,6 +6,9 @@ import ErrorController from '../controllers/error'
 import { Poll } from '../utils/poll';
 import PollOptionModel from '../models/poll_option';
 import PollVoteModel from '../models/poll_vote';
+import moment from 'moment';
+
+import PollResult from '../controllers/poll-result'
 
 export const app = getFrogApp({
     initialState: {
@@ -40,16 +43,22 @@ app.frame('/:id?', async (c) => {
     }
 
     let isVoted = await PollVoteModel.getUserVoteOption(parseInt(id),fid!);
-    
-    if(isExpired === true){
-        const message = isVoted ? `The poll (${id}) has expired. \nYour Vote:\n'${isVoted}'` : '`The poll (${id}) has expired`'
-        return ErrorController(c, {
-            content: message,
+    const data = await PollModel.getPollById(parseInt(id));
+
+    if(isExpired === true || isVoted){
+        // const message = isVoted ? `The poll (${id}) has expired. \nYour Vote:\n'${isVoted}'` : `The poll (${id}) has expired`
+        const voteModel = await PollVoteModel.getVoteCountsByOptionInPercentage(parseInt(id));
+        
+        return PollResult(c, {
+            state: voteModel,
+            id:id,
+            userVote:isVoted,
+            poll:data,
+            deadline:moment(data!.deadline).format(process.env.FC_FORMAT_DATE+ "[GMT]ZZ"),
             hideBack:true
         });
     }
 
-    const data = await PollModel.getPollById(parseInt(id));
     const poll = new Poll(data!);
     const option = await PollOptionModel.getByPollId(parseInt(id));
     
@@ -62,7 +71,8 @@ app.frame('/:id?', async (c) => {
                     optionId = option[index-1].option_id!;
                 }else{
                     return ErrorController(c, {
-                        content: `Please enter a number (1-${option.length}) to vote.`
+                        content: `Please enter a number (1-${option.length}) to vote.`,
+                        hideBack:false
                     });
                 }
             }
@@ -90,7 +100,7 @@ app.frame('/:id?', async (c) => {
         }else{
             return ErrorController(c, {
                 content: `Sorry, the option you selected (${optionId}) is not available. Please choose a valid option from the list.`,
-                hideBack:true
+                hideBack:false
             });
         }
     }

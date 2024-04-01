@@ -28,7 +28,6 @@ export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>
     }
 
     const state= await deriveState((previousState) => {
-        console.log(id, previousState);
         if(id == '0'){
             const state = previousState as PollType;
             state.duration = Number(inputText?.trim())

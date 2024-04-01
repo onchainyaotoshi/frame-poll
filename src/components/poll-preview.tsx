@@ -1,9 +1,10 @@
 import { FrameContext } from "frog";
+import moment from 'moment';
 
 export default (c: FrameContext, state: any): JSX.Element => (<div
   style={{
     alignItems: 'center',
-    background: 'linear-gradient(to right, #6a11cb, #2575fc)',
+    background: '#344afb',
     backgroundSize: '100% 100%',
     display: 'flex',
     flexDirection: 'column',
@@ -40,16 +41,16 @@ export default (c: FrameContext, state: any): JSX.Element => (<div
     color: 'white',
     fontSize: 36,
     position: 'absolute',
-    bottom: 16, left: 16
-  }}>{`Finished? Click 'Submit' to proceed.`}</div>
+    bottom: 16, right: 16
+  }}>{`Click 'Submit' to proceed.`}</div>
 
   
 <div style={{
     color: 'white',
     fontSize: 36,
     position: 'absolute',
-    top: 16, right: 16
-  }}>{`Vote within ${state.duration}hrs before poll closes.`}</div>
+    bottom: 16, left: 16
+  }}>{`End: ${moment(state.deadline).format(process.env.FC_FORMAT_DATE+" [GMT]ZZ")}`}</div>
 
 {/* content */}
   {state.validatedOptions.data.map((val:string, index:number) => <div

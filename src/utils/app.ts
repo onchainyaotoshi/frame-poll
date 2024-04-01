@@ -7,7 +7,10 @@ const frogAppArgs: FrogConstructorParameters = {
     // dev:{
     //     appFid: 282770,
     //     enabled: parseInt(process.env.FC_DEV_NGROK!) === 0
-    // }
+    // },
+    imageOptions: {
+        format: 'png',
+    },
 }
 
 if(isLive()){

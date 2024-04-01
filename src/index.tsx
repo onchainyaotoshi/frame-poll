@@ -1,6 +1,5 @@
 import { serve } from '@hono/node-server'
 import { serveStatic } from 'frog/serve-static'
- 
 import { devtools } from 'frog/dev'
 import { getFrogApp } from './utils/app'
 import ngrok from '@ngrok/ngrok';
@@ -21,7 +20,7 @@ const app = getFrogApp();
 
 app.use('/*', serveStatic({ root: './public' }))
 
-// app.frame("/", (c)=>IndexController(c,"/vote/19"))
+// app.frame("/", (c)=>IndexController(c,"/vote/38"))
 app.frame("/", (c)=>IndexController(c,"/admin"))
 
 app.route("/admin", AdminRoute);
@@ -32,7 +31,8 @@ app.hono.get('/tool/:id',async (c: Context)=>{
 
     try {
       const id = c.req.param('id');
-      const data = (await fs.readFile(filePath, 'utf8')).replace("{{data}}",`${process.env.FC_DOMAIN}/vote/${id}`);
+      const link = `${process.env.FC_DOMAIN}/vote/${id}`;
+      const data = (await fs.readFile(filePath, 'utf8')).replaceAll("{{data}}",link);
       c.header('Content-Type', 'text/html');
       return c.body(data);
     } catch (err) {

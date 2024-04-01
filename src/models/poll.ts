@@ -28,7 +28,7 @@ export default class PollModel {
     return createdPoll;
   }
 
-  static async listNewToOld(limit: number = 8): Promise<IPollModel[]> {
+  static async listNewToOld(limit: number = 0): Promise<IPollModel[]> {
     const polls = await db(this.tableName)
       .select(
         'poll_id',
@@ -36,11 +36,12 @@ export default class PollModel {
         'options',
         'deadline',
         'created_at',
-        db.raw(`CASE WHEN LENGTH(question) > 12 THEN CONCAT(SUBSTRING(question, 1, 12), '...') ELSE question END as question`), // Truncate question and append '...' if longer than 12 chars
-        db.raw(`ROUND((EXTRACT(EPOCH FROM (deadline - created_at)) / 3600)) as exp`) // Calculate the approximate difference in hours between 'deadline' and 'created_at', rounded to the nearest hour
+        'question'
+        // db.raw(`CASE WHEN LENGTH(question) > 12 THEN CONCAT(SUBSTRING(question, 1, 12), '...') ELSE question END as question`), // Truncate question and append '...' if longer than 12 chars
+        // db.raw(`ROUND((EXTRACT(EPOCH FROM (deadline - created_at)) / 3600)) as exp`) // Calculate the approximate difference in hours between 'deadline' and 'created_at', rounded to the nearest hour
     )
       .orderBy('created_at', 'desc') // Order by 'created_at' in descending order
-      .limit(limit); // Limit the results to 'limit'
+      .limit(limit ? limit : parseInt(process.env.FC_ML_QUESTION!)); // Limit the results to 'limit'
   
     return polls;
   }

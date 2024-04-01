@@ -29,7 +29,7 @@ export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>
     
     return BackHomeController(c, {
         state:state,
-        content: `Copy and paste the link below so users can vote on the poll you created.\n${process.env.FC_DOMAIN}/vote/${state._id!}`
+        content: `Copy and paste the link below so users can vote on the poll you created or you can click 'share'.\n${process.env.FC_DOMAIN}/vote/${state._id!}`
     });
 }
 
