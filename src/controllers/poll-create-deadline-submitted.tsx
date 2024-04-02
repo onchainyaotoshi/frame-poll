@@ -5,8 +5,7 @@ import ErrorController from './error'
 import { type TypedResponse } from "../../node_modules/frog/types/response";
 
 export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>{
-    const { frameData, verified, inputText, deriveState } = c;
-    const { fid } = frameData ?? {};
+    const { inputText, deriveState } = c;
     const {id} = c.req.param() as { id: string };
 
     if(!inputText && id != '1'){

@@ -11,18 +11,10 @@ import moment from 'moment';
 import PollResult from '../controllers/poll-result'
 
 export const app = getFrogApp({
-    initialState: {
-        fid: undefined,
-        question: undefined,
-        options: undefined,
-        duration: undefined,
-        validatedOptions: undefined,
-        _id: undefined
-    }
 });
 
 app.frame('/:id?', async (c) => {
-    const { buttonValue, status, frameData, inputText, deriveState, initialPath } = c;
+    const { buttonValue,  frameData, inputText } = c;
 
     const fid = frameData?.fid;
     const { id } = c.req.param() as { id: string };

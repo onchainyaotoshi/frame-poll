@@ -2,15 +2,11 @@ import { getFrogApp } from '../utils/app'
 
 import PollController from '../controllers/home'
 import PollResult from '../controllers/poll-result'
-import QuestionController from '../controllers/question'
 import IndexController from '../controllers/index'
 import ErrorController from '../controllers/error'
 
 
 import PollVoteModel from '../models/poll_vote';
-
-import { Button, FrameContext, FrameResponse, TextInput } from "frog"
-import Style1 from '../components/style-1.js'
 
 import PollCreateQuestionSubmittedController from '../controllers/poll-create-question-submitted';
 import PollCreateOptionsSubmittedController from '../controllers/poll-create-options-submitted';
@@ -27,7 +23,8 @@ export const app = getFrogApp({
     options:undefined,
     duration:undefined,
     validatedOptions:undefined,
-    _id:undefined
+    _id:undefined,
+    verify:undefined
   }
 });
 
@@ -36,7 +33,7 @@ app.frame('/:id?', async (c) => {
   const fid = frameData?.fid;
   const {id} = c.req.param() as { id: string };
 
-  const state = deriveState((previousState:any) => {
+  const state = await deriveState((previousState:any) => {
     previousState.fid = fid;
   });
 

@@ -1,6 +1,5 @@
 import { Button, FrameContext, FrameResponse, TextInput } from "frog"
 import VoteComponent from '../components/vote'
-import Style1Component from '../components/style-1'
 
 import { type TypedResponse } from "../../node_modules/frog/types/response";
 

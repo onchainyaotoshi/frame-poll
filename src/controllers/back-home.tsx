@@ -1,4 +1,4 @@
-import { Button, FrameContext, FrameResponse, TextInput } from "frog"
+import { Button, FrameContext, FrameResponse } from "frog"
 import Style1 from '../components/style-1.js'
 import { type TypedResponse } from "../../node_modules/frog/types/response.js";
 

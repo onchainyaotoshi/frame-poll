@@ -1,5 +1,4 @@
-import { Button, FrameContext, FrameResponse, TextInput } from "frog"
-import Style from '../components/style-index'
+import { Button, FrameContext, FrameResponse } from "frog"
 import { type TypedResponse } from "../../node_modules/frog/types/response.js";
 
 export default (c: FrameContext, a?: string): TypedResponse<FrameResponse> => c.res({

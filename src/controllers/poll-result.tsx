@@ -1,4 +1,4 @@
-import { Button, FrameContext, FrameResponse, TextInput } from "frog"
+import { Button, FrameContext, FrameResponse } from "frog"
 import PollResultComponent from '../components/poll-result'
 
 import { type TypedResponse } from "../../node_modules/frog/types/response.js";
