@@ -4,8 +4,7 @@ import ErrorController from './error'
 
 import { type TypedResponse } from "../../node_modules/frog/types/response";
 
-
-import {isNftoshisHolder, neynar} from '../utils/web3/web3'
+import { isLive } from '../utils/dev-tools';
 
 
 export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> => {
@@ -23,26 +22,7 @@ export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>
 
     const state: any = await deriveState(async (previousState) => {
         const state = previousState as PollType;
-        if (state.verify === undefined) {
-            try{
-                state.verify = false;
-                // const res = await neynar.lookupUserByFid(282770);
-                const res = await neynar.lookupUserByFid(fid);
-                // @ts-ignore
-                const addresses = res.result.user.verifiedAddresses.eth_addresses;
-
-                for(let i =0 ;i<addresses.length;i++){
-                    const isVerify = await isNftoshisHolder(addresses[i]);
-                    if(isVerify){
-                        state.verify = true;
-                        break;
-                    }
-                }
-            }catch(err){
-                console.error(err);
-            }
-        }
-
+        
         if (id == '0') {
             state.question = inputText?.trim();
         }

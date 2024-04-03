@@ -2,6 +2,7 @@ import { Frog, FrogConstructorParameters } from 'frog'
 import { neynar } from 'frog/hubs'
 import { isLive } from './dev-tools';
 import _ from 'lodash';
+import Nftoshis from 'nftoshis-gating';
 
 const frogAppArgs: FrogConstructorParameters = {
     // dev:{
@@ -13,9 +14,11 @@ const frogAppArgs: FrogConstructorParameters = {
     },
 }
 
-if(isLive()){
-    frogAppArgs.hub = neynar({ apiKey: process.env.NEYNAR_API_KEY || '' });
-    frogAppArgs.verify = 'silent';
-}
+// if(isLive()){
+//     frogAppArgs.hub = neynar({ apiKey: process.env.NEYNAR_API_KEY || '' });
+//     frogAppArgs.verify = 'silent';
+// }
 
 export const getFrogApp = (opts: FrogConstructorParameters<{State:PollType}> = {}) => new Frog(_.merge(frogAppArgs,opts));
+
+export const nftoshis = new Nftoshis();
