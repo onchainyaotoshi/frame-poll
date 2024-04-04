@@ -18,7 +18,9 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export const app = getFrogApp(); 
+export const app = getFrogApp({
+  browserLocation: '/'
+});
 
 app.use('/*', serveStatic({ root: './public' }))
 
@@ -29,6 +31,19 @@ app.frame("/", (c)=>IndexController(c,"/admin"))
 app.route("/admin", AdminRoute);
 app.route("/vote", VoteRoute);
 app.route("/view", ViewRoute);
+
+app.hono.get('/', async(c:Context)=>{
+  const filePath = path.join(__dirname,"..", 'public', 'home.html');
+
+  try {
+    const data = (await fs.readFile(filePath, 'utf8'));
+    c.header('Content-Type', 'text/html');
+    return c.body(data);
+  } catch (err) {
+    console.error('Failed to read file :', err);
+    return c.text('Internal Server Error', 500);
+  }
+});
 
 app.hono.get('/tool/:id',async (c: Context)=>{
     const filePath = path.join(__dirname,"..", 'public', 'copy.html');
