@@ -36,7 +36,7 @@ export default (c: FrameContext, state: any, showInput: boolean): JSX.Element =>
         fontSize: 36,
         position: 'absolute',
         bottom: 16, left: 16
-    }}>{`End: ${moment(state.poll["deadline"]).format(process.env.FC_FORMAT_DATE+" [GMT]ZZ")}`}</div>
+    }}>{`End: ${moment.utc(state.data["deadline"]).format(process.env.FC_FORMAT_DATE)}`}</div>
 
     <div style={{
         color: 'white',

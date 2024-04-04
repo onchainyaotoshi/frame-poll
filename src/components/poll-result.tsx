@@ -112,7 +112,7 @@ export default (c: FrameContext, options: Record<string,any>): JSX.Element => (
       left:16,
       bottom:16
     }}
-  >{`From: ${moment(options.poll.created_at).format(process.env.FC_FORMAT_DATE+" [GMT]ZZ")}, To: ${moment(options.poll.deadline).format(process.env.FC_FORMAT_DATE+" [GMT]ZZ")}`}</div>
+  >{`From: ${moment.utc(options.poll.created_at).format(process.env.FC_FORMAT_DATE)}, To: ${moment.utc(options.poll.deadline).format(process.env.FC_FORMAT_DATE)}`}</div>
 
   </div>
 

@@ -25,7 +25,7 @@ export default (c: FrameContext, opts: Record<string, any>): JSX.Element => (<di
       <div style={{ display: 'flex'}}>
         <div style={{ flex: 1, textAlign: 'left', paddingLeft: '10px', border:'2px solid white', fontWeight:'bold'  }}>ID</div>
         <div style={{ flex: 3, textAlign: 'left', paddingLeft: '10px', border:'2px solid white', fontWeight:'bold'  }}>Question</div>
-        <div style={{ flex: 2, textAlign: 'left', paddingLeft: '10px', border:'2px solid white', fontWeight:'bold'  }}>{`End (${moment().format('[GMT]ZZ')})`}</div>
+        <div style={{ flex: 2, textAlign: 'left', paddingLeft: '10px', border:'2px solid white', fontWeight:'bold'  }}>{`End`}</div>
       </div>
 
       {/* Data Rows */}
@@ -37,7 +37,7 @@ export default (c: FrameContext, opts: Record<string, any>): JSX.Element => (<di
             <div key={index} style={{ display: 'flex'}}>
               <div style={{ flex: 1, textAlign: 'left', paddingLeft: '10px', border:'2px solid white', display:'flex'  }}>{item.poll_id}</div>
               <div style={{ flex: 3, textAlign: 'left', paddingLeft: '10px', border:'2px solid white', display:'flex'  }}>{item.question.length < parseInt(process.env.FC_CL_LIMIT!) ? item.question : item.question.substring(0,process.env.FC_CL_LIMIT)+"..."}</div>
-              <div style={{ flex: 2, textAlign: 'left', paddingLeft: '10px', border:'2px solid white', display:'flex'  }}>{moment(item.deadline).format(process.env.FC_FORMAT_DATE)}</div>
+              <div style={{ flex: 2, textAlign: 'left', paddingLeft: '10px', border:'2px solid white', display:'flex'  }}>{moment.utc(item.deadline).format(process.env.FC_FORMAT_DATE)}</div>
             </div>
           ))
         ) 

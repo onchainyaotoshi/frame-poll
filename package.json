@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=18.12.1"
+    "node": ">=20"
   },
   "scripts": {
     "dev": "dotenv -e .env -- frog dev --host",
@@ -24,7 +24,6 @@
     "pg": "^8.11.3"
   },
   "devDependencies": {
-    "@ngrok/ngrok": "^1.1.1",
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.17",
     "dotenv": "^16.4.5",

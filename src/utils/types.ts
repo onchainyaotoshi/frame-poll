@@ -10,6 +10,5 @@ type PollType = {
     options:string  | undefined,
     duration: number | undefined,
     validatedOptions:ValidationResultType<string[]> | undefined
-    _id:number | undefined,
-    verify: boolean | undefined
+    _id:number | undefined
 }

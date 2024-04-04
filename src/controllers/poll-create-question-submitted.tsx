@@ -27,19 +27,7 @@ export default async (c: FrameContext): Promise<TypedResponse<FrameResponse>> =>
             state.question = inputText?.trim();
         }
     }) as PollType;
-
-    if(state.verify === false){
-        return ErrorController(c, {
-            content: `Apologies, but it appears you do not currently hold any NFToshis.`,
-            btnBackValue: 'poll-create-question-back',
-            btnBackAction: '/1',
-            link:{
-                name:'Buy',
-                href:'https://opensea.io/collection/nftoshis-official'
-            }
-        });
-    }
-
+    
     return QuestionController(c, {
         content: `${state.question}`,
         placeholder: `e.g., Apple${process.env.FC_POLL_SEPARATOR} Banana${process.env.FC_POLL_SEPARATOR}`,

@@ -29,7 +29,7 @@ export default (c: FrameContext, state: any): JSX.Element => (<div
     }}
   >{state.question}</div>
 
-{/* instructions */}
+  {/* instructions */}
   <div style={{
     color: 'white',
     fontSize: 36,
@@ -37,23 +37,23 @@ export default (c: FrameContext, state: any): JSX.Element => (<div
     top: 16, left: 16
   }}>Preview</div>
 
-<div style={{
+  <div style={{
     color: 'white',
     fontSize: 36,
     position: 'absolute',
     bottom: 16, right: 16
   }}>{`Click 'Submit' to proceed.`}</div>
 
-  
-<div style={{
+
+  <div style={{
     color: 'white',
     fontSize: 36,
     position: 'absolute',
     bottom: 16, left: 16
-  }}>{`End: ${moment(state.deadline).format(process.env.FC_FORMAT_DATE+" [GMT]ZZ")}`}</div>
+  }}>{`End: ${moment.utc().add(state.duration, 'hours').format(process.env.FC_FORMAT_DATE)}`}</div>
 
-{/* content */}
-  {state.validatedOptions.data.map((val:string, index:number) => <div
+  {/* content */}
+  {state.validatedOptions.data.map((val: string, index: number) => <div
     display="flex"
     style={{
       color: 'white',
@@ -61,86 +61,96 @@ export default (c: FrameContext, state: any): JSX.Element => (<div
     }}
   >{`${index + 1}. ${val}`}</div>)}
 
-{/* farcaster buttons */}
-  {state.validatedOptions.length > 4 ?(
-    <>
-  <div style={{
-    fontSize: 24,
-    color: 'white',
-    marginTop:24,
-    width:192,
-    height:48,
-    border:"white",
-    display: 'flex', // Use flexbox
-    justifyContent: 'center', // Center content horizontally in the flex container
-    alignItems: 'center', // Center content vertically in the flex container
-  }}>
-    {`Input Text`}
-  </div>
+  {/* farcaster buttons */}
+  {state.validatedOptions.data.length > 4 ? (
+    <div style={{
+      alignItems: 'center',
+      background: '#344afb',
+      backgroundSize: '100% 100%',
+      display: 'flex',
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+      justifyContent: 'center',
+      textAlign: 'center',
+      width: '100%'
+    }}>
+      <div style={{
+        fontSize: 24,
+        color: 'white',
+        marginTop: 12,
+        width: 128,
+        height: 36,
+        border: "white",
+        display: 'flex', // Use flexbox
+        justifyContent: 'center', // Center content horizontally in the flex container
+        alignItems: 'center', // Center content vertically in the flex container
+      }}>
+        {`Input Text`}
+      </div>
 
-  <div style={{
-    fontSize: 24,
-    color: 'white',
-    marginTop:24,
-    width:192,
-    height:48,
-    border:"white",
-    display: 'flex', // Use flexbox
-    justifyContent: 'center', // Center content horizontally in the flex container
-    alignItems: 'center', // Center content vertically in the flex container
-  }}>
-    {`Submit`}
-  </div>
-  </>)
- : (
-<div style={{
-  display: 'flex', // Use flexbox
-  flexDirection: 'row', // Align children left to right
-  justifyContent: 'center', // Center the items horizontally in the container
-  alignItems: 'center', // Center the items vertically in the container
-  marginTop: 16
-}}>
- <div style={{
-  fontSize: 24,
-  color: 'white',
-  margin: '0 8px',
-  width:96,
-  height:48,
-  border:"white",
-  display: 'flex', // Use flexbox
-  justifyContent: 'center', // Center content horizontally in the flex container
-  alignItems: 'center', // Center content vertically in the flex container
-}}>
-  {"1"}
-</div>
-<div style={{
-  fontSize: 24,
-  color: 'white',
-  margin: '0 8px',
-  width:96,
-  height:48,
-  border:"white",
-  display: 'flex', // Use flexbox
-  justifyContent: 'center', // Center content horizontally in the flex container
-  alignItems: 'center', // Center content vertically in the flex container
-}}>
-  {"2"}
-</div>
-<div style={{
-  fontSize: 24,
-  color: 'white',
-  margin: '0 8px',
-  width:96,
-  height:48,
-  border:"white",
-  display: 'flex', // Use flexbox
-  justifyContent: 'center', // Center content horizontally in the flex container
-  alignItems: 'center', // Center content vertically in the flex container
-}}>
-  {"etc..."}
-</div>
-</div>)
-}
+      <div style={{
+        fontSize: 24,
+        color: 'white',
+        marginTop: 12,
+        width: 128,
+        height: 36,
+        border: "white",
+        display: 'flex', // Use flexbox
+        justifyContent: 'center', // Center content horizontally in the flex container
+        alignItems: 'center', // Center content vertically in the flex container
+      }}>
+        {`Submit`}
+      </div>
+    </div>)
+    : (
+      <div style={{
+        display: 'flex', // Use flexbox
+        flexDirection: 'row', // Align children left to right
+        justifyContent: 'center', // Center the items horizontally in the container
+        alignItems: 'center', // Center the items vertically in the container
+        marginTop: 16
+      }}>
+        <div style={{
+          fontSize: 24,
+          color: 'white',
+          margin: '0 8px',
+          width: 96,
+          height: 48,
+          border: "white",
+          display: 'flex', // Use flexbox
+          justifyContent: 'center', // Center content horizontally in the flex container
+          alignItems: 'center', // Center content vertically in the flex container
+        }}>
+          {"1"}
+        </div>
+        <div style={{
+          fontSize: 24,
+          color: 'white',
+          margin: '0 8px',
+          width: 96,
+          height: 48,
+          border: "white",
+          display: 'flex', // Use flexbox
+          justifyContent: 'center', // Center content horizontally in the flex container
+          alignItems: 'center', // Center content vertically in the flex container
+        }}>
+          {"2"}
+        </div>
+        <div style={{
+          fontSize: 24,
+          color: 'white',
+          margin: '0 8px',
+          width: 96,
+          height: 48,
+          border: "white",
+          display: 'flex', // Use flexbox
+          justifyContent: 'center', // Center content horizontally in the flex container
+          alignItems: 'center', // Center content vertically in the flex container
+        }}>
+          {"etc..."}
+        </div>
+      </div>)
+  }
 
 
 </div>)

@@ -2,11 +2,10 @@ import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { devtools } from 'frog/dev'
 import { getFrogApp } from './utils/app'
-import ngrok from '@ngrok/ngrok';
-import {isLive} from './utils/dev-tools'
 
 import {app as AdminRoute} from './routes/admin';
 import {app as VoteRoute} from './routes/vote';
+import {app as ViewRoute} from './routes/view';
 import IndexController from './controllers/index';
 import { Context } from 'hono';
 
@@ -16,15 +15,17 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export const app = getFrogApp();
+export const app = getFrogApp(); 
 
 app.use('/*', serveStatic({ root: './public' }))
 
-// app.frame("/", (c)=>IndexController(c,"/vote/38"))
-app.frame("/", (c)=>IndexController(c,"/admin"))
+app.frame("/", (c)=>IndexController(c,"/vote/6"))
+// app.frame("/", (c)=>IndexController(c,"/view/6"))
+// app.frame("/", (c)=>IndexController(c,"/admin"))
 
 app.route("/admin", AdminRoute);
 app.route("/vote", VoteRoute);
+app.route("/view", ViewRoute);
 
 app.hono.get('/tool/:id',async (c: Context)=>{
     const filePath = path.join(__dirname,"..", 'public', 'copy.html');
@@ -51,18 +52,3 @@ serve({
 })
 
 console.log(`Server is running on port ${port}`)
-
-// if(!isLive()){
-//   if(parseInt(process.env.FC_DEV_NGROK!) === 1){
-//     const listener = await ngrok.connect({
-//       proto: 'http',
-//       addr: port,
-//       authtoken_from_env: true,
-//       domain: process.env.FC_DOMAIN ? process.env.FC_DOMAIN.replace("https://", "") : ''
-//     });
-    
-//     console.log(`${listener.url()}`);
-//   }else{
-//     devtools(app, { serveStatic })
-//   }
-// }

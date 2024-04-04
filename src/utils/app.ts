@@ -5,19 +5,15 @@ import _ from 'lodash';
 import Nftoshis from 'nftoshis-gating';
 
 const frogAppArgs: FrogConstructorParameters = {
-    // dev:{
-    //     appFid: 282770,
-    //     enabled: parseInt(process.env.FC_DEV_NGROK!) === 0
-    // },
     imageOptions: {
         format: 'png',
     },
 }
 
-// if(isLive()){
-//     frogAppArgs.hub = neynar({ apiKey: process.env.NEYNAR_API_KEY || '' });
-//     frogAppArgs.verify = 'silent';
-// }
+// // this is not working, throw errors:
+// // Error: message is invalid. invalid signer: signer 0x268741c9a443f52192636054ce2b7b746300b3fbba72185a1e23793e9d2f5e81 not found for fid 1
+// frogAppArgs.hub = neynar({ apiKey: process.env.NEYNAR_API_KEY || '' });
+// frogAppArgs.verify = true;
 
 export const getFrogApp = (opts: FrogConstructorParameters<{State:PollType}> = {}) => new Frog(_.merge(frogAppArgs,opts));
 

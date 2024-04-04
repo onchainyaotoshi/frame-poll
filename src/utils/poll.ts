@@ -29,8 +29,8 @@ export class Poll implements PollType {
       this.question = poll.question;
       this.options = poll.options;
 
-      const deadlineMoment = moment(poll.deadline);
-      const createdMoment = moment(poll.created_at);
+      const deadlineMoment = moment.utc(poll.deadline);
+      const createdMoment = moment.utc(poll.created_at);
 
       this.duration = Math.round(moment.duration(deadlineMoment.diff(createdMoment)).asHours());
       

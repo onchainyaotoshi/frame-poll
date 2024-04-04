@@ -46,7 +46,7 @@ app.frame('/:id?', async (c) => {
             id:id,
             userVote:isVoted,
             poll:data,
-            deadline:moment(data!.deadline).format(process.env.FC_FORMAT_DATE+ "[GMT]ZZ"),
+            deadline:moment.utc(data!.deadline).format(process.env.FC_FORMAT_DATE),
             hideBack:true
         });
     }
@@ -100,6 +100,7 @@ app.frame('/:id?', async (c) => {
     return VoteController(c, {
         voted: isVoted,
         model: {
+            data:data,
             poll:poll,
             option:option
         }

@@ -25,13 +25,12 @@ export const app = getFrogApp({
     options: undefined,
     duration: undefined,
     validatedOptions: undefined,
-    _id: undefined,
-    verify: undefined
+    _id: undefined
   }
 });
 
 app.frame('/:id?', async (c) => {
-  const { buttonValue, status, frameData, inputText, deriveState, initialPath } = c;
+  const { buttonValue, frameData, inputText, deriveState } = c;
   const fid = frameData?.fid;
   const { id } = c.req.param() as { id: string };
 
@@ -58,6 +57,7 @@ app.frame('/:id?', async (c) => {
       if (poll) {
         const data = await PollVoteModel.getVoteCountsByOptionInPercentage(poll.poll_id!);
         return PollResult(c, {
+          id:parseInt(inputText!),
           state: data,
           poll: poll
         });
