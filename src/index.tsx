@@ -19,9 +19,9 @@ export const app = getFrogApp();
 
 app.use('/*', serveStatic({ root: './public' }))
 
-app.frame("/", (c)=>IndexController(c,"/vote/6"))
+// app.frame("/", (c)=>IndexController(c,"/vote/6"))
 // app.frame("/", (c)=>IndexController(c,"/view/6"))
-// app.frame("/", (c)=>IndexController(c,"/admin"))
+app.frame("/", (c)=>IndexController(c,"/admin"))
 
 app.route("/admin", AdminRoute);
 app.route("/vote", VoteRoute);
