@@ -3,6 +3,9 @@ import { serveStatic } from '@hono/node-server/serve-static'
 import { devtools } from 'frog/dev'
 import { getFrogApp } from './utils/app'
 
+import { isLive } from './utils/dev-tools';
+
+
 import {app as AdminRoute} from './routes/admin';
 import {app as VoteRoute} from './routes/vote';
 import {app as ViewRoute} from './routes/view';
@@ -44,7 +47,9 @@ app.hono.get('/tool/:id',async (c: Context)=>{
 
 const port: number | undefined = process.env.PORT ? +process.env.PORT : undefined;
 
-devtools(app, { serveStatic })
+if(!isLive()){
+  devtools(app, { serveStatic })
+}
 
 serve({
   fetch: app.fetch,
