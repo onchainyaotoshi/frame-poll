@@ -5,7 +5,6 @@ import { getFrogApp } from './utils/app'
 
 import { isLive } from './utils/dev-tools';
 
-
 import {app as AdminRoute} from './routes/admin';
 import {app as VoteRoute} from './routes/vote';
 import {app as ViewRoute} from './routes/view';

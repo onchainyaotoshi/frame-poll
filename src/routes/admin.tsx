@@ -15,6 +15,7 @@ import PollModel from '../models/poll';
 import PollVoteModel from '../models/poll_vote';
 
 import { isLive } from '../utils/dev-tools';
+import { FrameContext } from 'frog'
 
 export const app = getFrogApp({
   initialState: {
@@ -48,6 +49,11 @@ app.frame('/:id?', async (c) => {
   } else if (buttonValue == 'poll-create-deadline-back') {
     return await PollCreateOptionsSubmittedController(c);
   } else if (buttonValue == 'poll-create-save') {
+    const tmp = await isHolder(c,fid!);
+    if(tmp !== true){
+      return tmp;
+    }
+
     return await PollCreateSaveSubmittedController(c);
   } else if (buttonValue == 'poll-view') {
     if (!isNaN(parseInt(inputText!))) {
@@ -71,19 +77,10 @@ app.frame('/:id?', async (c) => {
   else {
     if (buttonValue == 'login') {
       try{
-        if (!await nftoshis.isHolder(isLive() ? fid! : parseInt(process.env.FC_FID!))) {
-          return ErrorController(c, {
-            content: `Apologies, but it appears you don't currently possess any NFTOSHIS. 
-            For those interested in exploring the unique benefits and becoming a part of our community, 
-            please feel free to discover more about how you can get involved.`,
-            link: {
-              name: 'Discover More',
-              href: 'https://opensea.io/collection/nftoshis-official'
-            },
-            isReset: true
-          });
+        const tmp = await isHolder(c,fid!);
+        if(tmp !== true){
+          return tmp;
         }
-  
         await UserModel.createIfNotExists(fid!);
       }catch(err: any){
         return ErrorController(c, {
@@ -99,3 +96,20 @@ app.frame('/:id?', async (c) => {
     });
   }
 })
+
+async function isHolder(c:FrameContext,fid:number){
+  if (!await nftoshis.isHolder(isLive() ? fid : parseInt(process.env.FC_FID!))) {
+    return ErrorController(c, {
+      content: `Apologies, but it appears you don't currently possess any NFTOSHIS. 
+      For those interested in exploring the unique benefits and becoming a part of our community, 
+      please feel free to discover more about how you can get involved.`,
+      link: {
+        name: 'Discover More',
+        href: 'https://opensea.io/collection/nftoshis-official'
+      },
+      isReset: true
+    });
+  }
+
+  return true;
+}
