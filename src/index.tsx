@@ -19,13 +19,13 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const app = getFrogApp({
-  browserLocation: '/'
+  // browserLocation: '/'
 });
 
 app.use('/*', serveStatic({ root: './public' }))
 
-// app.frame("/", (c)=>IndexController(c,"/vote/6"))
-// app.frame("/", (c)=>IndexController(c,"/view/6"))
+// app.frame("/frame", (c)=>IndexController(c,"/vote/10"))
+// app.frame("/frame", (c)=>IndexController(c,"/view/7"))
 app.frame("/frame", (c)=>IndexController(c,"/admin"))
 
 app.route("/admin", AdminRoute);

@@ -97,6 +97,19 @@ app.frame('/:id?', async (c) => {
         }
     }
 
+    if(isVoted){
+        const voteModel = await PollVoteModel.getVoteCountsByOptionInPercentage(parseInt(id));
+        
+        return PollResult(c, {
+            state: voteModel,
+            id:id,
+            userVote:isVoted,
+            poll:data,
+            deadline:moment.utc(data!.deadline).format(process.env.FC_FORMAT_DATE),
+            hideBack:true
+        });
+    }
+
     return VoteController(c, {
         voted: isVoted,
         model: {
