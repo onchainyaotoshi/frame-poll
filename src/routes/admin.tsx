@@ -5,9 +5,6 @@ import PollResult from '../controllers/poll-result'
 import IndexController from '../controllers/index'
 import ErrorController from '../controllers/error'
 
-
-import PollVoteModel from '../models/poll_vote';
-
 import PollCreateQuestionSubmittedController from '../controllers/poll-create-question-submitted';
 import PollCreateOptionsSubmittedController from '../controllers/poll-create-options-submitted';
 import PollCreateSaveSubmittedController from '../controllers/poll-create-save-submitted';
@@ -15,6 +12,7 @@ import PollCreateDeadlineSubmittedController from '../controllers/poll-create-de
 
 import UserModel from '../models/user';
 import PollModel from '../models/poll';
+import PollVoteModel from '../models/poll_vote';
 
 import { isLive } from '../utils/dev-tools';
 
@@ -75,7 +73,9 @@ app.frame('/:id?', async (c) => {
       try{
         if (!await nftoshis.isHolder(isLive() ? fid! : parseInt(process.env.FC_FID!))) {
           return ErrorController(c, {
-            content: `Apologies, but it appears you don't currently possess any NFTOSHIS. For those interested in exploring the unique benefits and becoming a part of our community, please feel free to discover more about how you can get involved.`,
+            content: `Apologies, but it appears you don't currently possess any NFTOSHIS. 
+            For those interested in exploring the unique benefits and becoming a part of our community, 
+            please feel free to discover more about how you can get involved.`,
             link: {
               name: 'Discover More',
               href: 'https://opensea.io/collection/nftoshis-official'

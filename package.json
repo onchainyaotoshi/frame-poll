@@ -2,6 +2,7 @@
   "name": "frame-poll",
   "private": true,
   "type": "module",
+  "author":"yaotoshi",
   "engines": {
     "node": ">=20"
   },

@@ -26,7 +26,7 @@ app.use('/*', serveStatic({ root: './public' }))
 
 // app.frame("/", (c)=>IndexController(c,"/vote/6"))
 // app.frame("/", (c)=>IndexController(c,"/view/6"))
-app.frame("/", (c)=>IndexController(c,"/admin"))
+app.frame("/frame", (c)=>IndexController(c,"/admin"))
 
 app.route("/admin", AdminRoute);
 app.route("/vote", VoteRoute);
@@ -36,7 +36,16 @@ app.hono.get('/', async(c:Context)=>{
   const filePath = path.join(__dirname,"..", 'public', 'home.html');
 
   try {
-    const data = (await fs.readFile(filePath, 'utf8'));
+    let data = (await fs.readFile(filePath, 'utf8'));
+    const links = [
+      `https://warpcast.com/~/compose?text=solve+to+earn+$toshi+or+$frame&embeds[]=https://coral-app-9pbpd.ondigitalocean.app/frame`,
+      `https://warpcast.com/~/compose?text=Please+take+a+moment+to+vote&embeds[]=${process.env.FC_DOMAIN}/frame`
+    ];  
+
+    for(let i=0;i<links.length;i++){
+      data = data.replace(`{{link-${i+1}}}`,links[i]);
+    }
+
     c.header('Content-Type', 'text/html');
     return c.body(data);
   } catch (err) {
@@ -62,9 +71,9 @@ app.hono.get('/tool/:id',async (c: Context)=>{
 
 const port: number | undefined = process.env.PORT ? +process.env.PORT : undefined;
 
-if(!isLive()){
-  devtools(app, { serveStatic })
-}
+// if(!isLive()){
+//   devtools(app, { serveStatic })
+// }
 
 serve({
   fetch: app.fetch,
