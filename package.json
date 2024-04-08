@@ -2,7 +2,7 @@
   "name": "frame-poll",
   "private": true,
   "type": "module",
-  "author":"yaotoshi",
+  "author": "yaotoshi",
   "engines": {
     "node": ">=20"
   },
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^1",
-    "frog": "^0.7.13",
+    "frog": "^0.8.1",
     "hono": "^4",
     "knex": "^3.1.0",
     "lodash": "^4.17.21",
