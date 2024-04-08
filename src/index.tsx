@@ -17,9 +17,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export const app = getFrogApp({
-  browserLocation: '/'
-});
+export const app = getFrogApp();
 
 app.use('/*', serveStatic({ root: './public' }))
 

@@ -10,13 +10,15 @@ import moment from 'moment';
 
 import PollResult from '../controllers/poll-result'
 
-export const app = getFrogApp({
-});
+export const app = getFrogApp();
 
 app.frame('/:id?', async (c) => {
     const { buttonValue,  frameData, inputText } = c;
 
-    const fid = frameData?.fid;
+    let fid = frameData?.fid;
+    if(fid === undefined){
+      fid = -1;
+    }
     const { id } = c.req.param() as { id: string };
 
     if(isNaN(parseInt(id))){
