@@ -7,5 +7,6 @@ export default (c: FrameContext, a?: string): TypedResponse<FrameResponse> => c.
     image: `${process.env.FC_DOMAIN}/images/main.png?ver=5`,
     intents: [
         <Button value="login">{`Les Goh`}</Button>,
+        <Button.Link href="https://github.com/onchainyaotoshi/frame-poll">{`Docs`}</Button.Link>,
     ],
 });
