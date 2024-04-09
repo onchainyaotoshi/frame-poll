@@ -11,7 +11,7 @@
     "start": "dotenv -e .env -- nodemon -e ts,tsx --exec tsx src/index.tsx",
     "start:live": "tsx src/index.tsx",
     "install-db": "dotenv -e .env -- tsx ./scripts/install-db.ts",
-    "install-db:live": "tsx ./scripts/install-db.ts"
+    "install-db:live": "npx tsx ./scripts/install-db.ts"
   },
   "dependencies": {
     "@hono/node-server": "^1",

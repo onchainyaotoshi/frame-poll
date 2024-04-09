@@ -66,6 +66,35 @@ const createPollVotesTable = async () => {
     
     console.log('Table poll_votes created');
   }
+
+  //added 2024-09-04 to fix bug: https://warpcast.com/jerry-d/0x41103c2e
+  const removeFidForeignKeyIfExist = async () => {
+    const constraintNameQuery = `
+      SELECT tc.constraint_name 
+      FROM information_schema.table_constraints AS tc 
+      JOIN information_schema.key_column_usage AS kcu
+        ON tc.constraint_name = kcu.constraint_name
+        AND tc.table_schema = kcu.table_schema
+      WHERE tc.constraint_type = 'FOREIGN KEY' 
+        AND tc.table_name = 'poll_votes' 
+        AND kcu.column_name = 'fid';
+    `;
+
+    const result = await db.raw(constraintNameQuery);
+    if (result.rows.length > 0) {
+      const constraintName = result.rows[0].constraint_name;
+
+      await db.schema.alterTable('poll_votes', (table) => {
+        table.dropForeign(['fid'], constraintName);
+      });
+
+      console.log(`Foreign key constraint '${constraintName}' removed from 'poll_votes' table.`);
+    } else {
+      console.log("No foreign key constraint found for 'fid' in 'poll_votes' table.");
+    }
+  };
+
+  await removeFidForeignKeyIfExist();
 };
 
 export const initialize = async()=>{
