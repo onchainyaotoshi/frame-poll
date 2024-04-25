@@ -36,7 +36,9 @@ app.hono.get('/', async(c:Context)=>{
     let data = (await fs.readFile(filePath, 'utf8'));
     const links = [
       `https://warpcast.com/~/compose?text=solve+to+earn+$toshi+or+$frame&embeds[]=https://coral-app-9pbpd.ondigitalocean.app/frame`,
-      `https://warpcast.com/~/compose?text=Please+take+a+moment+to+vote&embeds[]=${process.env.FC_DOMAIN}/frame`
+      `https://warpcast.com/~/compose?text=Please+take+a+moment+to+vote&embeds[]=${process.env.FC_DOMAIN}/frame`,
+      `https://warpcast.com/~/add-cast-action?url=https://tip-toshi.replit.app/tip`,
+      `https://warpcast.com/~/compose?text=Please+take+a+moment+to+vote&embeds[]=https://tip-toshi.replit.app`
     ];  
 
     for(let i=0;i<links.length;i++){
