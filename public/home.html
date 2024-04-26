@@ -1,19 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Community Spaces</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             background: #f4f4f4;
-            padding: 20px;
+            padding: 0;
             margin: 0;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+        }
+
+        header {
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .links {
+            display: flex;
+            gap: 10px;
+        }
+
+        header .links a {
+            color: #333; /* Adjust the color to fit your design */
+            font-size: 1.5rem; /* Icon size */
+            text-decoration: none;
         }
 
         .club {
@@ -77,21 +98,31 @@
 
             .club {
                 width: calc(50% - 30px);
-                /* Adjust width for medium screens */
             }
         }
 
         @media (min-width: 1025px) {
             .club {
                 width: calc(25% - 30px);
-                /* Adjust width for large screens */
             }
         }
     </style>
 </head>
-
 <body>
-
+    <header>
+        <div class="logo">Community Spaces</div>
+        <div class="links">
+            <a href="https://github.com/onchainyaotoshi" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://twitter.com/onchainyaotoshi" target="_blank" style="color: #1DA1F2;"><i class="fab fa-twitter"></i></a>
+            <a href="https://warpcast.com/yaotoshi" target="_blank" style="color: purple;">
+                <svg class="svg-icon" width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <title>Warpcast</title>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.92028 31.9901H24.0698C28.4371 31.9901 31.9901 28.4373 31.9901 24.0699V7.92053C31.9901 3.55319 28.4371 0.000137329 24.0698 0.000137329H7.92028C3.55304 0.000137329 0 3.55319 0 7.92053V24.0699C0 28.4373 3.55304 31.9901 7.92028 31.9901ZM19.4134 16.048L20.9908 10.124H25.1383L21.2924 23.2218H17.7062L15.9951 17.1397L14.284 23.2218H10.7055L6.85115 10.124H10.999L12.5915 16.0916L14.1891 10.124H17.8309L19.4134 16.048Z" fill="currentColor"></path>
+                </svg>
+            </a>
+            <a href="https://t.me/onchainyaotoshi" target="_blank"  style="color: #0088cc;"><i class="fab fa-telegram-plane"></i></a>
+        </div>
+    </header>
 
     <div class="club">
         <img src="/images/rubik.png" alt="Rubik's Cube Club">
