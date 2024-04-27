@@ -8,6 +8,7 @@ import { isLive } from './utils/dev-tools';
 import {app as AdminRoute} from './routes/admin';
 import {app as VoteRoute} from './routes/vote';
 import {app as ViewRoute} from './routes/view';
+import {app as MeowRoute} from './routes/meow';
 import IndexController from './controllers/index';
 import { Context } from 'hono';
 
@@ -28,6 +29,7 @@ app.frame("/frame", (c)=>IndexController(c,"/admin"))
 app.route("/admin", AdminRoute);
 app.route("/vote", VoteRoute);
 app.route("/view", ViewRoute);
+app.route("/meow", MeowRoute);
 
 app.hono.get('/', async(c:Context)=>{
   const filePath = path.join(__dirname,"..", 'public', 'home.html');
