@@ -1,9 +1,6 @@
 import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
-import { devtools } from 'frog/dev'
 import { getFrogApp } from './utils/app'
-
-import { isLive } from './utils/dev-tools';
 
 import {app as AdminRoute} from './routes/admin';
 import {app as VoteRoute} from './routes/vote';
