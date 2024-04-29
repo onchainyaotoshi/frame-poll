@@ -1,4 +1,4 @@
-import { getFrogApp, nftoshis } from '../utils/app'
+import { getFrogApp, nftoshis, toshi } from '../utils/app'
 
 import PollController from '../controllers/home'
 import PollResult from '../controllers/poll-result'
@@ -98,6 +98,11 @@ app.frame('/:id?', async (c) => {
 })
 
 async function isHolder(c:FrameContext,fid:number){
+  const isToshiHolder = await toshi.isHolder(isLive() ? fid : parseInt(process.env.FC_FID!));
+  if(isToshiHolder){
+    return true;
+  }
+  
   if (!await nftoshis.isHolder(isLive() ? fid : parseInt(process.env.FC_FID!))) {
     return ErrorController(c, {
       content: `Apologies, but it appears you don't currently possess any NFTOSHIS. 

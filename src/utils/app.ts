@@ -3,6 +3,7 @@ import { neynar } from 'frog/hubs'
 // import { isLive } from './dev-tools';
 import _ from 'lodash';
 import Nftoshis from 'nftoshis-gating';
+import Toshi from 'toshi-gating';
 
 const frogAppArgs: FrogConstructorParameters = {
     imageOptions: {
@@ -18,3 +19,4 @@ frogAppArgs.verify = false;
 export const getFrogApp = (opts: FrogConstructorParameters<{State:PollType}> = {}) => new Frog(_.merge(frogAppArgs,opts));
 
 export const nftoshis = new Nftoshis();
+export const toshi = new Toshi();
